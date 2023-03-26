@@ -20,3 +20,13 @@ run: |
     echo "First output"
     echo "Second output"
 ```
+
+Github Actions can have a ton of triggers.
+![Action Triggers](images/action-triggers.png)
+
+An action in the context of Github Actions is a custom application that performs a (typically
+complex) frequently repeated task. An alternative to that is using the run key that execute
+(typically simple) shell commands that are defined by you.
+
+When you view actions in the marketplace, then a checkmark with "Verified creator" can give
+you extra confidence that the action isn't doing anything malicious as it has been verified.

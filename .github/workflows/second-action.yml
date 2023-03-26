@@ -1,0 +1,28 @@
+name: More complex action
+# There can be multiple event triggers
+on: [push, workflow_dispatch]
+jobs:
+  repo-action:
+    runs-on: ubuntu-latest
+    steps:
+      # Github Actions do not run in your repository, the repository is not a server.
+      # As the actions run on a server, which is separate, then we have to get the code.
+      - name: Get the code
+        uses: actions/checkout@v3 # The `uses` keyword is for actions.
+        # The with keyword goes together with uses. It belongs to the action.
+        # It allows you to define config for the action.
+        # with:
+  # Multiple jobs run in parallel by default.
+  other-action:
+    # Each job has its own runner, completely separate from the others.
+    runs-on: ubuntu-latest
+    # To force the jobs into a sequential flow, then define what job this depends on.
+    needs: repo-action
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v3
+
+      - name: Output Github context
+        # We use the ${{  }} syntax to access some variables that are made available by GitHub.
+        # There are also a bunch of util methods that can be used.
+        run: echo "${{ toJSON(github) }}"
