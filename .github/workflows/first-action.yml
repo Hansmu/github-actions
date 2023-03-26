@@ -1,0 +1,18 @@
+# Defining a workflow starts with defining a name
+name: First workflow
+# The on key defines when the workflow will be triggered
+on: workflow_dispatch # workflow_dispatch waits for the user to manually start this workflow
+# We define the jobs that are contained in this workflow
+jobs:
+  # A job
+  first-job:
+    # The environment that the job runs in
+    runs-on: ubuntu-latest
+    # The steps that this job contains
+    steps:
+      - name: Print greeting # A human friendly name for the step
+        # The run command that will be executed in this step
+        run: echo "Hello world!"
+
+      - name: Print goodbye
+        run: echo "Goodbye!"
