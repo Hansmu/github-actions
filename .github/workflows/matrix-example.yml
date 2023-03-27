@@ -1,0 +1,31 @@
+name: First workflow
+on: workflow_dispatch
+jobs:
+  matrix-job:
+    strategy:
+      # A matrix allows us to run our jobs with a set of different values.
+      # The actions will be run in parallel by default.
+      # If one job fails, then the other jobs are cancelled and skipped by default.
+      # We can use the continue-on-error: true property on the job level to avoid this.
+      matrix:
+        whatever-set-of-values: [12, 14, 16]
+        another-random-set-of-values: [ubuntu-latest, windows-latest]
+        # We can use include to add a value without combining the different sets. The above setup has a total of 3 x 2 = 6
+        # combinations running. If we'd add 18 to the first set of values, then we'd have 4 x 2 = 8 combinations. With the
+        # below syntax of `include`, we can add a single specific combination to the total list, so 3 x 2 + 1 = 7 combinations.
+        include:
+          - whatever-set-of-values: 18
+            another-random-set-of-values: ubuntu-latest
+            # Can add completely brand-new values here as well.
+            some-brand-new-value: 10
+        # This can be used to exclude some combinations.
+        exclude:
+          - whatever-set-of-values: 12
+            another-random-set-of-values: windows-latest
+    continue-on-error: true
+    runs-on: ${{ matrix.another-random-set-of-values }}
+    steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.whatever-set-of-values }}
