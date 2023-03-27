@@ -19,6 +19,15 @@ on:
     paths-ignore:
       - '.github/workflows/*'
   workflow_dispatch:
+# You can have environment specific secrets being passed in through  GH as well. Have to specify the environment and its
+# values on GH for this.
+environment: testing-environment-that-we-defined
+# Environment values can be defined on the workflow, job, or step level
+env:
+  TEST_DB_NAME: banana-db
+  # To access secret values that have been defined on GitHub. If you try to print this value, then it's hidden on GH.
+  TEST_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
 jobs:
   repo-action:
     runs-on: ubuntu-latest
@@ -30,6 +39,13 @@ jobs:
         # The with keyword goes together with uses. It belongs to the action.
         # It allows you to define config for the action.
         # with:
+      - name: Output OS specific env variable
+        runs: echo $TEST_DB_NAME # The way you reference it depends on the OS.
+
+      - name: Output GH specific env variable
+        runs: |
+          echo "Test DB name: ${{ env.TEST_DB_NAME }}"
+
   # Multiple jobs run in parallel by default.
   other-action:
     # Each job has its own runner, completely separate from the others.
