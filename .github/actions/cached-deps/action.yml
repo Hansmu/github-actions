@@ -4,19 +4,25 @@
 name: 'Get & Cache dependencies'
 # `on` does not exist for custom actions, because they aren't workflows.
 description: 'Get the dependencies (via npm) and cache items.'
+inputs:
+  caching-enabled:
+    description: 'Whether to cache dependencies or not'
+    required: false
+    default: 'false'
 runs:
   # This will tell GH that this is a custom composite action
   using: 'composite'
   steps:
     - name: Setup cache
       id: cached-dependencies
+      if: inputs.caching-enabled != 'false'
       uses: actions/cache@v3
       with:
         path: node_modules
         key: npm-dependencies-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install dependencies
-      if: steps.cached-dependencies.outputs.cache-hit != 'true'
+      if: steps.cached-dependencies.outputs.cache-hit != 'true' || inputs.caching != 'true'
       run: npm ci
       # When you're using the run key, then you have to additionally add the shell key.
       # Since you don't define the run environment here, then that shell property is needed.

@@ -65,6 +65,8 @@ jobs:
         # Do not have to provide the action.yml file here, because GH will automatically look for it here. Just like index.js in JS.
         # Have to provide the path from the root.
         uses: ./.github/actions/cached-deps
+        with:
+          caching-enabled: 'false'
 
       - name: Output Github context
         # We use the ${{  }} syntax to access some variables that are made available by GitHub.
