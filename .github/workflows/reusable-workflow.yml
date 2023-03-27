@@ -1,0 +1,35 @@
+name: Reusable workflow
+# The workflow_call is a special keyword that allows for a workflow to be called from within other workflows.
+#on: workflow_call
+on:
+  workflow_call:
+    # This is configuration property to provide inputs to the workflow.
+    inputs:
+      name-of-our-artifact:
+        description: The name of the deployable artifact file
+        required: false
+        # The default property if this wasn't provided
+        default: dist
+        type: string
+    # To provide a secret value, you use this property
+    secrets:
+      some-secret:
+        # Can't provide a default value for secrets.
+        required: false
+    outputs:
+      some-workflow-output:
+        description: The result of the deploy
+        value: ${{ jobs.deploy.outputs.some-job-output }}
+jobs:
+  deploy:
+    outputs:
+      some-job-output: ${{ steps.set-result-value.step-result }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "Deploying & uploading... ${{ inputs.name-of-our-artifact }}"
+
+      - name: Result of the deployment
+        id: set-result-value
+        run: echo "step-result=success" >> $GITHUB_OUTPUT

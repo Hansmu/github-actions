@@ -1,0 +1,20 @@
+name: Using reusable workflow
+on: workflow_dispatch
+jobs:
+  deploy:
+    # We have to provide a full path to the workflow from the project root.
+    # Could also be a path to another repository.
+    uses: ./.github/workflows/reusable-workflow.yml
+    # We use `with` to provide custom values for our workflow.
+    with:
+      name-of-our-artifact: our-custom-property
+    # Secrets are provided via the secrets key, not the with.
+    secrets:
+      some-secret: ${{ secrets.some-secret }}
+
+    print-deploy-result:
+      needs: deploy
+      runs-on: ubuntu-latest
+      steps:
+        - name: Print deploy output
+          run: echo "${{ needs.deploy.outputs.some-workflow-output }}"

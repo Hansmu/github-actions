@@ -1,4 +1,4 @@
-name: First workflow
+name: Matrix example
 on: workflow_dispatch
 jobs:
   matrix-job:
