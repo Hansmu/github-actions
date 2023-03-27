@@ -46,3 +46,8 @@ Jobs can spit out artifacts, and they can be used either manually or automatical
 
 `continue-on-error: true` can be used to have an action finish with a success, even if a failure
 happens.
+
+Multiple steps can be grouped into a single custom action.
+
+You can create a separate repository for custom actions or put them in an existing repository.
+![Types of actions](images/action-types.png)
