@@ -8,13 +8,17 @@ jobs:
       # We also have to repeat the same code in each of the steps, including in other workflows, so that they'd know
       # to use the cache.
       - name: Setup cache
+        id: cached-dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: node_modules
           # The key with which to retrieve. Also, to be used for discarding when needed, so it cannot be completely static.
           # Have to have a dynamic part to enable cache clearing.
           # hasFiles is a built-in function that can be used to get the hash of files.
           key: npm-dependencies-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
+        # We can utilize an if here with the cache as well. We can skip installing if there has been a cache hit.
+        # This saves us time on NPM setting things up and checking if it has all the dependencies.
+        if: steps.cached-dependencies.outputs.cache-hit != 'true'
         run: npm ci

@@ -44,3 +44,5 @@ to skip execution. E.g. `[skip ci]`
 Jobs can spit out artifacts, and they can be used either manually or automatically.
 ![Artifacts](images/artifacts.png)
 
+`continue-on-error: true` can be used to have an action finish with a success, even if a failure
+happens.

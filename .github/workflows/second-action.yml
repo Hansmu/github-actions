@@ -40,9 +40,14 @@ jobs:
         # It allows you to define config for the action.
         # with:
       - name: Output OS specific env variable
+        id: output-os-specific
         runs: echo $TEST_DB_NAME # The way you reference it depends on the OS.
 
       - name: Output GH specific env variable
+        # If can be used to optionally execute the step.
+        # We can omit the ${{}} syntax here, because we usually want dynamic values here.
+        # We need to include the failure function to change GH default behavior of skipping on failure.
+        if: failure() && steps.output-os-specific.outcome == 'failure
         runs: |
           echo "Test DB name: ${{ env.TEST_DB_NAME }}"
 
