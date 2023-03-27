@@ -33,3 +33,10 @@ you extra confidence that the action isn't doing anything malicious as it has be
 
 Events can have filters and activity types
 ![Activity types and filters](images/activity-types-filters.png)
+
+Pull requests from forked repositories do not automatically run CI actions on first commit.
+This is to avoid spam from untrusted contributors.
+
+Workflows can be cancelled and skipped. You can add a certain string to a commit message
+to skip execution. E.g. `[skip ci]`
+![Cancelling and skipping workflows](images/cancelling-and-skipping.png)
