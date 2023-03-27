@@ -62,6 +62,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Load & cache dependencies
+        id: cache-deps
         # Do not have to provide the action.yml file here, because GH will automatically look for it here. Just like index.js in JS.
         # Have to provide the path from the root.
         uses: ./.github/actions/cached-deps
@@ -71,4 +72,4 @@ jobs:
       - name: Output Github context
         # We use the ${{  }} syntax to access some variables that are made available by GitHub.
         # There are also a bunch of util methods that can be used.
-        run: echo "${{ toJSON(github) }}"
+        run: echo "${{ toJSON(github) }} ${{ steps.cache-deps.outputs.used-cache }}"

@@ -9,6 +9,10 @@ inputs:
     description: 'Whether to cache dependencies or not'
     required: false
     default: 'false'
+outputs:
+  used-cache:
+    description: 'Whether the cache was used.'
+    value: ${{ steps.install.outputs.cache }}
 runs:
   # This will tell GH that this is a custom composite action
   using: 'composite'
@@ -22,8 +26,11 @@ runs:
         key: npm-dependencies-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install dependencies
+      id: install
       if: steps.cached-dependencies.outputs.cache-hit != 'true' || inputs.caching != 'true'
-      run: npm ci
+      run: |
+        npm ci
+        echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
       # When you're using the run key, then you have to additionally add the shell key.
       # Since you don't define the run environment here, then that shell property is needed.
       shell: bash
