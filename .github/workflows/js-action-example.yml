@@ -1,0 +1,25 @@
+name: JS Action example
+on: workflow_dispatch
+jobs:
+  js-job-usage:
+    runs-on: ubuntu-latest
+    steps:
+      # Remember, you have to checkout before you can use the custom action that's defined in your own repository, because
+      # it needs access to the code in the repository to execute it.
+      - name: Get the code
+        uses: actions/checkout@v3
+
+      - name: Use JS action
+        id: custom-js-action
+        uses: ./.github/actions/deploy-s3
+        # We can pass step specific env here. If the action was deploying to S3, then the CLI would automatically be
+        # searching for a key with this name, so we don't have to pass this value on in the CLI call.
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        with:
+          the-custom-bucket-name: bobbo
+          dist-folder: ./banana
+
+      - name: Output information
+        run: |
+          echo "URL: ${{ steps.custom-js-action.outputs.our-custom-website-url }}"

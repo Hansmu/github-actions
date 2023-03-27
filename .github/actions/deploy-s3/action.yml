@@ -1,0 +1,23 @@
+# action.yml is always needed, even if it isn't a composite action
+name: Deploy to S3
+description: 'Deploy a static website to S3'
+inputs:
+  the-custom-bucket-name:
+    description: 'Name of the bucket'
+    required: true
+  the-region-of-our-bucket:
+    description: 'The AWS region for the bucket'
+    required: false
+    default: 'us-east-1'
+  dist-folder:
+    description: 'The folder containing the deployable files.'
+    required: true
+outputs:
+  our-custom-website-url:
+    description: 'The URL of the website.'
+runs:
+  # So note that we do not use composite here.
+  using: 'node16'
+  # As opposed to steps, we now have a main property.
+  # pre and post properties can be defined here as well to have setup and cleanup.
+  main: 'main.js'
