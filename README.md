@@ -40,3 +40,7 @@ This is to avoid spam from untrusted contributors.
 Workflows can be cancelled and skipped. You can add a certain string to a commit message
 to skip execution. E.g. `[skip ci]`
 ![Cancelling and skipping workflows](images/cancelling-and-skipping.png)
+
+Jobs can spit out artifacts, and they can be used either manually or automatically.
+![Artifacts](images/artifacts.png)
+

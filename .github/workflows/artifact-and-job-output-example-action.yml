@@ -1,0 +1,39 @@
+name: Artifact and job output example action
+on: workflow_dispatch
+jobs:
+  artifact-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: the-id-used-for-retrieving # Used for retrieving
+          path: path/to/artifact/world.txt
+
+  job-output:
+    runs-on: ubuntu-latest
+    outputs:
+      # Steps is a special value made available by Github. It connects to the step by the id property.
+      our-job-output-data: ${{ steps.our-custom-js-file-name-setter-step.outputs.local-step-output-value }}
+    steps:
+      - name: Output a JS file name
+        # Make the step referencable.
+        id: our-custom-js-file-name-setter-step
+        # Here we're only defining the output of the step
+        # There used to be a more complicated syntax of ::set-output name=local-step-output-values::{}
+        run: find dist/assets/*.js -type f -execdir echo 'local-step-output-value={}' >> $GITHUB_OUTPUT ';'
+
+  artifact-deploy:
+    needs:  [artifact-upload, job-output]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: the-id-used-for-retrieving
+
+      - name: Output value
+        # Can reference using the needs object, but probably better to do it via the jobs object
+        run: echo "${{ needs.job-output.outputs.our-job-output-data }}"
+
+
