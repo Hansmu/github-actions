@@ -1,6 +1,24 @@
 name: More complex action
 # There can be multiple event triggers
-on: [push, workflow_dispatch]
+#on: [push, workflow_dispatch]
+# We can add more granular control over the event triggers as well
+on:
+  pull_request:
+    # This would be adding checks for activity types
+    types:
+      - opened
+  push:
+    # This would be adding filters for events
+    branches:
+      - main
+      - 'dev-*' # dev-new dev-this-is-new
+      - 'feat/**' # feat/new feat/new/thing
+    # Additionally, you can provide a filter for file paths.
+    paths:
+      - '**.js'
+    paths-ignore:
+      - '.github/workflows/*'
+  workflow_dispatch:
 jobs:
   repo-action:
     runs-on: ubuntu-latest

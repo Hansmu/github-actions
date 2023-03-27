@@ -30,3 +30,6 @@ complex) frequently repeated task. An alternative to that is using the run key t
 
 When you view actions in the marketplace, then a checkmark with "Verified creator" can give
 you extra confidence that the action isn't doing anything malicious as it has been verified.
+
+Events can have filters and activity types
+![Activity types and filters](images/activity-types-filters.png)
