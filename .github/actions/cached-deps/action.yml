@@ -1,0 +1,23 @@
+# For a composite action, we only need an action.yml file
+# Since this is in our own repository, then we cannot include the code check out logic here, as in order to run the
+# custom action in a separate workflow, we first have to check out the code.
+name: 'Get & Cache dependencies'
+# `on` does not exist for custom actions, because they aren't workflows.
+description: 'Get the dependencies (via npm) and cache items.'
+runs:
+  # This will tell GH that this is a custom composite action
+  using: 'composite'
+  steps:
+    - name: Setup cache
+      id: cached-dependencies
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: npm-dependencies-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.cached-dependencies.outputs.cache-hit != 'true'
+      run: npm ci
+      # When you're using the run key, then you have to additionally add the shell key.
+      # Since you don't define the run environment here, then that shell property is needed.
+      shell: bash
