@@ -1,5 +1,9 @@
 // All of the code to successfully run a package should be included in the action's folder. That means that the node_modules
 // here does not get ignored. It has to go up with the action.
+
+// Although, we could run command line commands here, perhaps we could instead run an install instead of commiting with the
+// dependencies?
+
 // https://github.com/actions/toolkit provides a whole bunch of different packages that can be used to building actions.
 // The core library provides us with all sorts of util methods for working with actions.
 const core = require('@actions/core');
