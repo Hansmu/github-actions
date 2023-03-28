@@ -51,3 +51,30 @@ Multiple steps can be grouped into a single custom action.
 
 You can create a separate repository for custom actions or put them in an existing repository.
 ![Types of actions](images/action-types.png)
+
+There are some security concerns to consider.
+![Some security concerns](images/some-security-issues.png)
+
+In order to sanitize against injection, then put a user controlled input in your script through
+a variable controlled by GitHub, for example env. So something like
+```yml
+env:
+  TITLE: ${{ github.event.issue.title }} 
+```
+
+![Action security levels](action-security-levels.png)
+
+You can control permissions that an action gets by adding a permissions tag on the job or 
+workflow level.
+```yml
+permissions:
+  issues: write
+```
+
+If we're sending requests to the GitHub Actions API, then we need to add an authorization
+token. We also have access to a GitHub Actions Authorization token inside our actions. An
+example is in the [permissions.yml](./.github/workflows/permissions.yml) file. It can be
+accessed via `${{ secrets.GITHUB_TOKEN }}`. We've been using this token behind the scenes
+a lot. Permissions are basically attached to the token.
+
+You can also configure the action permissions via the settings page on GitHub.
